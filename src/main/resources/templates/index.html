@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <title>Docker Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+
+
+<nav>
+    <i class="fa-brands fa-docker"></i>
+    <h1>Docker Container Manager</h1>
+
+    <a href="/pagina-destino" class="redirect-button">
+        <i class="fa-solid fa-plus"></i> Criar Container</a>
+
+</nav>
+
+<div class="filter-container">
+    <label for="search-input"></label><input type="text" id="search-input" placeholder="Buscar containers..." />
+
+    <label for="status-filter"></label><select id="status-filter">
+        <option value="Todos">Todos</option>
+        <option value="Ativo">Ativo</option>
+        <option value="Parado">Parado</option>
+    </select>
+</div>
+
+
+<div class="container-grid">
+    <div th:each="container : ${containers}" class="container-card">
+        <div class="container-top">
+            <p class="container-name"><span th:text="${container.name}"></span></p>
+            <p class="container-state"
+               th:classappend="${container.state} == 'running' ? ' active' : ' stopped'">
+                <span class="status-dot"></span>
+                <span class="status-text" th:text="${container.state == 'running' ? 'Ativo' : 'Parado'}"></span>
+            </p>
+        </div>
+        <p><i class="fa-solid fa-network-wired"></i> <span th:text="${container.port}"></span></p>
+        <p><i class="fa-solid fa-tag"></i> <span class="image-span" th:text="${container.image}"></span></p>
+        <p><i class="fa-regular fa-clock"></i> <span th:text="${container.status}"></span></p>
+
+        <form th:if="${container.state != 'running'}"  th:action="@{api/containers/start}" method="post">
+            <input type="hidden" name="id" th:value="${container.containerId}" />
+            <button class="start-button" type="submit"><i class="fa-solid fa-play"></i></button>
+        </form>
+
+        <form th:if="${container.state == 'running'}" th:action="@{api/containers/stop}" method="post">
+            <input type="hidden" name="id" th:value="${container.containerId}" />
+            <button class="stop-button" type="submit"><i class="fa-solid fa-stop"></i></button>
+        </form>
+
+    </div>
+    <span id="error-toast" class="toast" th:if="${error != null}">
+        <span th:text="${error}"></span>
+        <i class="fa-solid fa-xmark close-toast"></i>
+    </span>
+
+</div>
+
+
+<script th:src="@{/js/toast.js}"></script>
+<script th:src="@{/js/filter.js}"></script>
+</body>
+</html>
