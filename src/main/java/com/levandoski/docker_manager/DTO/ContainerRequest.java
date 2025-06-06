@@ -25,11 +25,29 @@ public class ContainerRequest { // classe responsável por converter o container
         this.containerId = containerId;
         this.image = image;
         this.name = name;
-        this.status = status.replaceAll("\\(.*?\\)", "");
+        this.status = formatStatus(status);
         this.createdAt = formatCreatedDate(createdAt);
         this.Port = String.format("%d:%d", publicPort, privatePort).equals("0:0") ? "Desligado" : String.format("%d:%d", publicPort, privatePort);
         this.command = command;
         this.state = state;
+    }
+
+    private String formatStatus(String status) {
+        status = status.replaceAll("\\(.*?\\)", "").trim();
+        if (status.startsWith("Up")) {
+            return "Em execução há " + status.substring(2).trim()
+                    .replace("minutes ago", "minutos atás")
+                    .replace("hours ago", "horas atás")
+                    .replace("about", "1")
+                    .replace("Less than a second", "menos de um segundo");
+        } else if (status.startsWith("Exited")) {
+            return "Encerrado há " + status.substring(6).trim()
+                    .replace("minutes ago", "minutos atás")
+                    .replace("hours ago", "horas atás")
+                    .replace("about", "1")
+                    .replace("Less than a second", "menos de um segundo");
+        }
+        return status;
     }
 
 

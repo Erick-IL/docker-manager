@@ -3,6 +3,7 @@
 <head>
     <title>Docker Manager</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="icon" href="/assets/docker-svgrepo-com.svg" type="image/png">
     <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body>
@@ -12,13 +13,26 @@
     <i class="fa-brands fa-docker"></i>
     <h1>Docker Container Manager</h1>
 
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i  id="theme-icon" class="fa-solid fa-moon"></i>
+    </button>
     <a href="/pagina-destino" class="redirect-button">
         <i class="fa-solid fa-plus"></i> Criar Container</a>
 
 </nav>
 
 <div class="filter-container">
-    <label for="search-input"></label><input type="text" id="search-input" placeholder="Buscar containers..." />
+    <div class="input-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <label for="search-input"></label><input
+                type="text"
+                id="search-input"
+                placeholder="Buscar containers..."
+                class="search-input"
+        />
+    </div>
+
 
     <label for="status-filter"></label><select id="status-filter">
         <option value="Todos">Todos</option>
@@ -63,5 +77,6 @@
 
 <script th:src="@{/js/toast.js}"></script>
 <script th:src="@{/js/filter.js}"></script>
+<script th:src="@{js/themeChange.js}"></script>
 </body>
 </html>

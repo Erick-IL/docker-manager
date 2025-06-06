@@ -1,16 +1,58 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #222222;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --input-border: #494444;
+    --container-name: #000000;
+    --border-color: #ccc;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --toast-bg: #f2505d;
+    --button-text: #ffffff;
+    --redirect-bg: #1a5fb4;
+    --redirect-hover: #144a8a;
+    --status-running-bg: #e0f7f1;
+    --status-running-text: #087f5b;
+    --status-stopped-bg: #fdecea;
+    --status-stopped-text: #c92a2a;
+}
+
+body.dark {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --input-bg: #2a2a2a;
+    --input-border: #555555;
+    --container-name: #e0e0e0;
+    --border-color: #444;
+    --shadow: rgba(255, 255, 255, 0.05);
+    --toast-bg: #d9534f;
+    --button-text: #ffffff;
+    --redirect-bg: #1a5fb4;
+    --redirect-hover: #0d3c6a;
+    --status-running-bg: #24493f;
+    --status-running-text: #4ee4bc;
+    --status-stopped-bg: #4e1e1e;
+    --status-stopped-text: #f99;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
 
 nav {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 15px 15px;
-    border-bottom: 1px solid #eee;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow);
 }
 
-nav i {
+.fa-docker {
     font-size: 28px;
-    color: #1a5fb4;
+    color: var(--redirect-bg);
     margin-left: 2%;
 }
 
@@ -20,28 +62,61 @@ nav h1 {
     margin: 0;
 }
 
-
 .filter-container {
     display: flex;
-    gap: 12px;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 50px 32px 20px auto;
 }
 
-#search-input {
-    flex: 1;
-    padding: 8px 12px;
-    font-size: 16px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    margin-left: 32px;
 }
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #aaa;
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 12px 10px 36px; /* padding-left maior por causa do ícone */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #000;
+    transition: all 0.3s ease;
+}
+
+/* Tema escuro */
+body.dark .search-input {
+    background-color: #2c2c2c;
+    color: #f1f1f1;
+    border-color: #444;
+}
+
+body.dark .search-icon {
+    color: #ccc;
+}
+
+
 
 #status-filter {
     padding: 8px 12px;
     font-size: 16px;
     border-radius: 6px;
-    border: 1px solid #ccc;
-    background-color: white;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+
     cursor: pointer;
 }
 
@@ -52,13 +127,13 @@ nav h1 {
     padding: 2rem;
 }
 
-
 .container-card {
-    border: 1px solid #ccc;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    color: #636363;
+    box-shadow: 0 2px 5px var(--shadow);
+    color: var(--text-color);
 }
 
 .container-top {
@@ -71,7 +146,7 @@ nav h1 {
 .container-name {
     font-size: 115%;
     margin: 0;
-    color: #000000;
+    color: var(--container-name);
 }
 
 .container-state {
@@ -91,23 +166,22 @@ nav h1 {
 }
 
 .container-state.active {
-    background-color: #e0f7f1;
-    color: #087f5b;
+    background-color: var(--status-running-bg);
+    color: var(--status-running-text);
 }
 
 .container-state.active .status-dot {
-    background-color: #087f5b;
+    background-color: var(--status-running-text);
 }
 
 .container-state.stopped {
-    background-color: #fdecea;
-    color: #c92a2a;
+    background-color: var(--status-stopped-bg);
+    color: var(--status-stopped-text);
 }
 
 .container-state.stopped .status-dot {
-    background-color: #c92a2a;
+    background-color: var(--status-stopped-text);
 }
-
 
 .redirect-button {
     margin-left: auto;
@@ -115,8 +189,8 @@ nav h1 {
     align-items: center;
     gap: 6px;
     padding: 15px 10px;
-    background-color: #1a5fb4;
-    color: #fff;
+    background-color: var(--redirect-bg);
+    color: var(--button-text);
     text-decoration: none;
     border-radius: 6px;
     font-size: 15px;
@@ -125,20 +199,18 @@ nav h1 {
     transition: background-color 0.3s ease;
 }
 
-.redirect-button:hover {
-    background-color: #144a8a;
-}
-
-.redirect-button i {
-    font-size: 15px;
-    color: #fff;
+.theme-toggle {
+    margin-left: 65%;
+    color: var(--text-color);
+    background-color: transparent;
+    font-size: 20px;
 }
 
 .toast {
     position: fixed;
     top: 90%;
     right: 20px;
-    background-color: #f2505d;
+    background-color: var(--toast-bg);
     color: white;
     padding: 12px 20px;
     border-radius: 6px;
@@ -146,7 +218,6 @@ nav h1 {
     z-index: 9999;
     font-weight: 500;
     font-size: 16px;
-
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.5s ease-in-out;
@@ -161,14 +232,13 @@ nav h1 {
     cursor: pointer;
 }
 
-
 button {
     padding: 8px 16px;
     font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    color: white;
+    color: var(--button-text);
     transition: background-color 0.3s ease;
 }
 
@@ -182,7 +252,6 @@ button {
 .stop-button {
     background-color: #c92a2a;
 }
-
 .stop-button:hover {
     background-color: #a71d2a;
 }
@@ -190,8 +259,20 @@ button {
 .delete-btn {
     background-color: #f2505d;
 }
-
 .delete-btn:hover {
     background-color: #a4363e;
+}
+
+.rotate {
+    animation: rotateIcon 0.5s ease-in-out;
+}
+
+@keyframes rotateIcon {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 

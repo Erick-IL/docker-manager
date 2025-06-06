@@ -17,7 +17,6 @@ public class DockerClientConfig {
     @Bean
     public DockerClient buildDockerClient() {
         DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                // Importante: use exatamente assim para Unix socket:
                 .withDockerHost(dockerSocketPath)
                 .withDockerTlsVerify(false)
                 .build();

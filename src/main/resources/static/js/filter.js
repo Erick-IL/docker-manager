@@ -33,8 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
             const matchesTag = tagText.match(query.toLowerCase());
             const matchesStatus = (status === 'Todos') || (stateText === status);
 
-            container.style.display = (matchesQuery && matchesStatus || matchesTag) ? '' : 'none';
+            container.style.display = (matchesQuery || matchesTag) && matchesStatus ? '' : 'none';
         });
-
     }
 });
