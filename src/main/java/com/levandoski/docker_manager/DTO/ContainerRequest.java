@@ -35,17 +35,21 @@ public class ContainerRequest { // classe responsável por converter o container
     private String formatStatus(String status) {
         status = status.replaceAll("\\(.*?\\)", "").trim();
         if (status.startsWith("Up")) {
-            return "Em execução há " + status.substring(2).trim()
+            return "Em execução há " + status.substring(2)
+                    .replace("seconds ago", "segundos atás")
                     .replace("minutes ago", "minutos atás")
                     .replace("hours ago", "horas atás")
                     .replace("about", "1")
-                    .replace("Less than a second", "menos de um segundo");
+                    .replace("ago", "atás")
+                    .replace("Less than a second", "menos de um segundo").trim();
         } else if (status.startsWith("Exited")) {
-            return "Encerrado há " + status.substring(6).trim()
+            return "Encerrado há " + status.substring(6)
+                    .replace("seconds ago", "segundos atás")
                     .replace("minutes ago", "minutos atás")
                     .replace("hours ago", "horas atás")
                     .replace("about", "1")
-                    .replace("Less than a second", "menos de um segundo");
+                    .replace("ago", "atás")
+                    .replace("Less than a second", "menos de um segundo").trim();
         }
         return status;
     }

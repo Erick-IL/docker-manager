@@ -87,7 +87,7 @@ nav h1 {
 
 .search-input {
     width: 100%;
-    padding: 10px 12px 10px 36px; /* padding-left maior por causa do ícone */
+    padding: 10px 12px 10px 36px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 16px;
@@ -106,8 +106,6 @@ body.dark .search-input {
 body.dark .search-icon {
     color: #ccc;
 }
-
-
 
 #status-filter {
     padding: 8px 12px;
@@ -276,3 +274,97 @@ button {
     }
 }
 
+.open-btn {
+    padding: 10px 20px;
+    background-color: #F2505D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.new-container-form {
+    background: var(--bg-color);
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.new-container-form h2 {
+    margin-top: 0;
+    color: var(--text-color);
+}
+
+.new-container-form label {
+    display: block;
+    margin-top: 10px;
+}
+
+.new-container-form input {
+    width: 100%;
+    background: var(--input-bg);
+    color: var(--text-color);
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+}
+
+.create-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: var(--redirect-bg);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.close-btn {
+    color: gray;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.input-ports {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+
+.port-group {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    flex: 1;
+}
+
+.new-container-form input {
+    width: 100%;
+    border-radius: 10px;
+}

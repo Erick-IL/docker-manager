@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="icon" href="/assets/docker-svgrepo-com.svg" type="image/png">
     <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -17,8 +18,9 @@
     <button class="theme-toggle" onclick="toggleTheme()">
         <i  id="theme-icon" class="fa-solid fa-moon"></i>
     </button>
-    <a href="/pagina-destino" class="redirect-button">
-        <i class="fa-solid fa-plus"></i> Criar Container</a>
+    <button class="redirect-button" onclick="openForm()">
+        <i class="fa-solid fa-plus"></i> Criar Container
+    </button>
 
 </nav>
 
@@ -65,6 +67,10 @@
             <input type="hidden" name="id" th:value="${container.containerId}" />
             <button class="stop-button" type="submit"><i class="fa-solid fa-stop"></i></button>
         </form>
+        <form th:action="@{api/containers/delete}" method="post">
+            <input type="hidden" name="id" th:value="${container.containerId}" />
+            <button class="delete-btn" type="submit">Deletar</button>
+        </form>
 
     </div>
     <span id="error-toast" class="toast" th:if="${error != null}">
@@ -72,11 +78,40 @@
         <i class="fa-solid fa-xmark close-toast"></i>
     </span>
 
+    <div class="overlay" id="modalOverlay">
+        <div class="new-container-form">
+            <h2>Criar Container Docker</h2>
+            <form action="api/containers/create" method="POST">
+                <label for="containerName">Nome do Container:</label>
+                <input type="text" id="containerName" name="containerName" placeholder="Nome_Container" >
+
+                <label for="imageName">Nome da Imagem:</label>
+                <input type="text" id="imageName" name="imageName" placeholder="nginx" required>
+
+                <div class="input-ports">
+                    <div class="port-group">
+                        <label for="port">Porta do Host:</label>
+                        <input class="port" type="number" id="port" name="port" placeholder="8080">
+                    </div>
+
+                    <div class="port-group">
+                        <label for="exposedPort">Porta do Container:</label>
+                        <input class="port" type="number" id="exposedPort" name="exposedPort" placeholder="8080">
+                    </div>
+                </div>
+
+                <button class="create-btn" type="submit"><i class="fa-brands fa-docker" style="color: #ffffff; font-size: 16px;"></i> Criar Container</button>
+                <button class="close-btn" type="reset" onclick="closeForm()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
 </div>
 
 
 <script th:src="@{/js/toast.js}"></script>
 <script th:src="@{/js/filter.js}"></script>
 <script th:src="@{js/themeChange.js}"></script>
+<script th:src="@{js/containerform.js}"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.levandoski.docker_manager.Controller;
 
+import com.github.dockerjava.api.exception.InternalServerErrorException;
 import com.github.dockerjava.api.exception.NotModifiedException;
 import com.levandoski.docker_manager.DTO.ContainerRequest;
 import com.levandoski.docker_manager.Service.DockerService;
@@ -26,7 +27,7 @@ public class DockerContainerController {
 
         List<ContainerRequest> containers = dockerService.listContainers(showAll);
         model.addAttribute("containers", containers);
-        return "index";
+        return "containerPage";
     }
 
     @PostMapping("api/containers/stop")
@@ -41,8 +42,18 @@ public class DockerContainerController {
     }
 
     @PostMapping("api/containers/start")
-    public String startContainer(@RequestParam("id") String containerId) {
-        dockerService.startContainer(containerId);
+    public String startContainer(RedirectAttributes redirectAttributes,
+                                 @RequestParam("id") String containerId) {
+        try {
+            dockerService.startContainer(containerId);
+        } catch (InternalServerErrorException error) {
+            String errorMessage = error.getMessage();
+            if (errorMessage.contains("port is already allocated")) {
+                redirectAttributes.addFlashAttribute("error", "A Porta já está em uso.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", errorMessage);
+            }
+        }
         return "redirect:/containers";
     }
 
@@ -53,8 +64,9 @@ public class DockerContainerController {
     }
 
     @PostMapping("api/containers/create")
-    public String createContainer(@RequestParam("imageName") String imageName) {
-        dockerService.createContainer(imageName);
+    public String createContainer(@RequestParam("imageName") String imageName, String containerName,
+                                  Integer port, Integer exposedPort, String volumePath) {
+        dockerService.createContainer(imageName, containerName, port, exposedPort);
         return "redirect:/containers";
     }
 
