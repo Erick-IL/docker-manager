@@ -29,7 +29,7 @@ Este projeto é uma aplicação Java que permite criar e gerenciar containers Do
 ### Clonando o projeto
 
 ```bash
-git clone https://github.com/seu-usuario/docker-container-manager.git
+git clone https://github.com/Erick-IL/docker-manager.git
 cd docker-container-manager
 ```
 
