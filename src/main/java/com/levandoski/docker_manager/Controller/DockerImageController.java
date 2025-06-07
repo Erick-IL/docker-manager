@@ -18,9 +18,5 @@ public class DockerImageController {
         this.dockerService = dockerService;
     }
 
-    @GetMapping("")
-    public List<Image> listImages() {
-        return dockerService.listImages();
-    }
 
 }

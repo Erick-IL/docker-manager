@@ -3,9 +3,11 @@ package com.levandoski.docker_manager.Service;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerCmd;
 import com.github.dockerjava.api.model.*;
+import com.github.dockerjava.core.command.LogContainerResultCallback;
 import com.levandoski.docker_manager.DTO.ContainerRequest;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,5 +86,9 @@ public class DockerService {
     public void removeContainer(String containerId) {
         dockerClient.removeContainerCmd(containerId).exec();
     }
+
+//    public String getContainerLog(String containerId) {
+//        dockerClient.logContainerCmd(containerId).withStdErr(true).withStdOut(true).withFollowStream(false).withTailAll();
+//    }
 
 }
