@@ -40,10 +40,6 @@ Compilando
 
 Executando
 ```bash
-java -jar target/docker-container-manager.jar
-
-Ou, se estiver usando Spring Boot:
-
 ./mvnw spring-boot:run
 ```
 
