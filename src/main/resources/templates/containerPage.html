@@ -18,7 +18,7 @@
     <button class="theme-toggle" onclick="toggleTheme()">
         <i  id="theme-icon" class="fa-solid fa-moon"></i>
     </button>
-    <button class="redirect-button" onclick="openForm()">
+    <button class="redirect-button" onclick="openForm('modalOverlay')">
         <i class="fa-solid fa-plus"></i> Criar Container
     </button>
 
@@ -58,20 +58,65 @@
         <p><i class="fa-solid fa-tag"></i> <span class="image-span" th:text="${container.image}"></span></p>
         <p><i class="fa-regular fa-clock"></i> <span th:text="${container.status}"></span></p>
 
-        <form th:if="${container.state != 'running'}"  th:action="@{api/containers/start}" method="post">
-            <input type="hidden" name="id" th:value="${container.containerId}" />
-            <button class="start-button" type="submit"><i class="fa-solid fa-play"></i></button>
-        </form>
+        <div class="container-card-btn">
+            <form th:if="${container.state != 'running'}"  th:action="@{api/containers/start}" method="post">
+                <input type="hidden" name="id" th:value="${container.containerId}" />
+                <button class="start-button" type="submit"><i class="fa-solid fa-play"></i></button>
+            </form>
 
-        <form th:if="${container.state == 'running'}" th:action="@{api/containers/stop}" method="post">
-            <input type="hidden" name="id" th:value="${container.containerId}" />
-            <button class="stop-button" type="submit"><i class="fa-solid fa-stop"></i></button>
-        </form>
-        <form th:action="@{api/containers/delete}" method="post">
-            <input type="hidden" name="id" th:value="${container.containerId}" />
-            <button class="delete-btn" type="submit">Deletar</button>
-        </form>
+            <form th:if="${container.state == 'running'}" th:action="@{api/containers/stop}" method="post">
+                <input type="hidden" name="id" th:value="${container.containerId}" />
+                <button class="stop-button" type="submit"><i class="fa-solid fa-stop"></i></button>
+            </form>
 
+            <button type="button"
+                    class="info-btn"
+                    th:onclick="|openForm('containerOverlay-__${container.containerId}__')|">
+                <i class="fa-solid fa-circle-info"></i>
+            </button>
+        </div>
+        <div class="overlay" th:id="'containerOverlay-' + ${container.containerId}">
+            <div class="container-info-form">
+                <div class="container-info-card">
+                    <div class="container-card-title">
+                        <h2>Informações do container</h2>
+                        <button class="close-info-btn" th:onclick="|closeForm('containerOverlay-__${container.containerId}__')|"><i class="fa-solid fa-xmark close-toast"></i></button>
+                    </div>
+                    <div class="container-info">
+                        <div class="container-top">
+                            <p class="container-name"><span th:text="${container.name}"></span></p>
+                            <p class="container-state"
+                               th:classappend="${container.state} == 'running' ? ' active' : ' stopped'">
+                                <span class="status-dot"></span>
+                                <span class="status-text" th:text="${container.state == 'running' ? 'Ativo' : 'Parado'}"></span>
+                            </p>
+                        </div>
+                        <p><i class="fa-solid fa-id-card"></i> <span th:text="${container.containerId.substring(0,6)}"></span> </p>
+                        <p><i class="fa-solid fa-tag"></i> <span class="image-span" th:text="${container.image}"></span></p>
+                        <p><i class="fa-solid fa-network-wired"></i> <span th:text="${container.port}"></span></p>
+                        <p><i class="fa-regular fa-clock"></i> <span th:text="${container.status}"></span></p>
+                        <p><i class="fa-solid fa-calendar-days"></i> <span th:text="${container.createdAt}"></span></p>
+                        <p><i class="fa-solid fa-database"></i> <span th:text="${container.sizeRootFs}"></span></p>
+
+                        <div class="container-info-card-btn">
+                            <form th:if="${container.state != 'running'}"  th:action="@{api/containers/start}" method="post">
+                                <input type="hidden" name="id" th:value="${container.containerId}" />
+                                <button class="start-button" type="submit"><i class="fa-solid fa-play"></i></button>
+                            </form>
+                            <form th:if="${container.state == 'running'}" th:action="@{api/containers/stop}" method="post">
+                                <input type="hidden" name="id" th:value="${container.containerId}" />
+                                <button class="stop-button" type="submit"><i class="fa-solid fa-stop"></i></button>
+                            </form>
+
+                            <form th:action="@{api/containers/delete}" method="post">
+                                <input type="hidden" name="id" th:value="${container.containerId}" />
+                                <button class="delete-btn" type="submit"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <span id="error-toast" class="toast" th:if="${error != null}">
         <span th:text="${error}"></span>
@@ -101,10 +146,11 @@
                 </div>
 
                 <button class="create-btn" type="submit"><i class="fa-brands fa-docker" style="color: #ffffff; font-size: 16px;"></i> Criar Container</button>
-                <button class="close-btn" type="reset" onclick="closeForm()">Cancelar</button>
+                <button class="close-btn" type="reset" onclick="closeForm('modalOverlay')">Cancelar</button>
             </form>
         </div>
     </div>
+
 
 </div>
 
@@ -113,5 +159,11 @@
 <script th:src="@{/js/filter.js}"></script>
 <script th:src="@{js/themeChange.js}"></script>
 <script th:src="@{js/containerform.js}"></script>
+<script>
+    const eventSource = new EventSource('/logs/stream');
+    eventSource.onmessage = function(event) {
+        document.getElementById('logs').textContent += event.data + "\n";
+    };
+</script>
 </body>
 </html>

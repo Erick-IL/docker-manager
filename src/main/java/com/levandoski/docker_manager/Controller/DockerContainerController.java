@@ -27,6 +27,7 @@ public class DockerContainerController {
 
         List<ContainerRequest> containers = dockerService.listContainers(showAll);
         model.addAttribute("containers", containers);
+
         return "containerPage";
     }
 
@@ -69,7 +70,6 @@ public class DockerContainerController {
         dockerService.createContainer(imageName, containerName, port, exposedPort);
         return "redirect:/containers";
     }
-
 
 }
 

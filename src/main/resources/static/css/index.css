@@ -368,3 +368,56 @@ input:focus {
     width: 100%;
     border-radius: 10px;
 }
+
+
+.container-card-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.container-card-btn form {
+    margin: 0;
+}
+
+.container-card-btn button {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.info-btn {
+    background-color: var(--redirect-bg);
+}
+
+.container-info-card {
+    background: var(--bg-color);
+    padding: 30px;
+    border-radius: 10px;
+    width: auto;
+    height: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+
+}
+
+.container-info-card h2 {
+    white-space: nowrap;
+}
+
+.close-info-btn {
+    background-color: transparent;
+    margin-left: 125px;
+    margin-bottom: 50px;
+}
+
+.container-card-title {
+    display: flex;
+}
+
+.container-info-card-btn {
+    display: flex;
+    gap: 10px ;
+}

@@ -1,7 +1,8 @@
-function openForm() {
-    document.getElementById('modalOverlay').style.display = 'flex';
+function openForm(elementClass) {
+    document.getElementById(elementClass).style.display = 'flex';
 }
 
-function closeForm() {
-    document.getElementById('modalOverlay').style.display = 'none';
+function closeForm(elementClass) {
+    document.getElementById(elementClass).style.display = 'none';
 }
+

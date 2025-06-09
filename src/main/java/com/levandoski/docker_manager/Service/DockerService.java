@@ -1,12 +1,14 @@
 package com.levandoski.docker_manager.Service;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.async.ResultCallback;
 import com.github.dockerjava.api.command.CreateContainerCmd;
+import com.github.dockerjava.api.command.InspectContainerCmd;
 import com.github.dockerjava.api.model.*;
-import com.github.dockerjava.core.command.LogContainerResultCallback;
 import com.levandoski.docker_manager.DTO.ContainerRequest;
 import org.springframework.stereotype.Service;
-
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,12 @@ public class DockerService {
         List<Container> containers = dockerClient.listContainersCmd().withShowAll(all).exec();
         List<ContainerRequest> containerRequests = new ArrayList<>();
         for (Container container : containers) {
+            Integer rootSize = dockerClient
+                    .inspectContainerCmd(container.getId()).withSize(true)
+                    .exec()
+                    .getSizeRootFs();
+
+
             String name = container.getNames() != null ? container.getNames()[0].replaceFirst("/", "") : "Desconhecido";
 
             ContainerPort[] ports = container.getPorts();
@@ -48,7 +56,9 @@ public class DockerService {
                     container.getCommand(),
                     container.getState(),
                     privatePort,
-                    publicPort
+                    publicPort,
+                    rootSize == null ? 0 : rootSize
+
             );
             containerRequests.add(dto);
         }
@@ -74,7 +84,6 @@ public class DockerService {
         cmd.exec();
     }
 
-
     public void startContainer(String containerId) {
         dockerClient.startContainerCmd(containerId).exec();
     }
@@ -87,8 +96,27 @@ public class DockerService {
         dockerClient.removeContainerCmd(containerId).exec();
     }
 
-//    public String getContainerLog(String containerId) {
-//        dockerClient.logContainerCmd(containerId).withStdErr(true).withStdOut(true).withFollowStream(false).withTailAll();
-//    }
 
-}
+    public String getContainerLogs(String containerId) throws InterruptedException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        dockerClient.logContainerCmd(containerId)
+                .withStdOut(true)
+                .withStdErr(true)
+                .withTailAll()
+                .exec(new ResultCallback.Adapter<Frame>() {
+                    @Override
+                    public void onNext(Frame frame) {
+                        try {
+                            outputStream.write(frame.getPayload());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).awaitCompletion();
+
+        return outputStream.toString(StandardCharsets.UTF_8);
+    }}
+
+
+
