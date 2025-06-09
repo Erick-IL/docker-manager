@@ -46,6 +46,23 @@ Executando
 ### 🎨 Interface Web
 A interface frontend pode ser acessada via navegador em `localhost:8080/containers`
 
+### 📷 Previews
+<details>
+   <summary> Tema Claro</summary>
+
+![mainWhite.png](previews/mainWhite.png)!
+![newContainerWhite.png](previews/newContainerWhite.png)
+
+</details>
+
+
+<details>
+   <summary> Tema escuro</summary>
+
+   ![mainDark.png](previews/mainDark.png)
+   ![newContainerBlack.png](previews/newContainerBlack.png)
+
+</details>
 
 ### ⚠️ Permissões
 
